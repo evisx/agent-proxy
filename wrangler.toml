@@ -5,4 +5,3 @@ compatibility_date = "2026-04-01"
 [vars]
 ROUTE_BASE_PATH = ""
 SELF_HOSTNAMES = ""
-DISPATCH_SECRET = ""

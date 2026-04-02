@@ -29,6 +29,27 @@ https://deploy.workers.cloudflare.com/?url=https://github.com/YOUR_GITHUB_USERNA
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/YOUR_GITHUB_USERNAME/agent-proxy)
 
+3. 部署完成后，配置 `DISPATCH_SECRET`：
+
+   进入 [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → 你的 Worker → **Settings** → **Variables and Secrets**，点击 **Add** 添加：
+
+   | Type | Name | Value |
+   |------|------|-------|
+   | Secret | `DISPATCH_SECRET` | 你的共享 secret 值 |
+
+   或通过 Wrangler CLI 设置：
+
+   ```bash
+   npx wrangler secret put DISPATCH_SECRET
+   ```
+
+本地开发时，将 secret 写入 `.dev.vars`（已被 `.gitignore` 忽略）：
+
+```bash
+cp .dev.vars.example .dev.vars
+# 编辑 .dev.vars 填入本地测试用的 secret
+```
+
 ## 快速开始
 
 ```bash
@@ -91,9 +112,8 @@ https://github.com/repos/cloudflare/workers?tab=actions
 - `SELF_HOSTNAMES`
   默认值：空字符串
   用途：逗号分隔的自代理主机名或 self-origin，用于阻断明显的循环代理
-- `DISPATCH_SECRET`
-  默认值：空字符串
-  用途：限制内部 relay 路径访问；为空时所有 relay 请求都会返回 `404`
+- `DISPATCH_SECRET`（Secret 类型，通过 `wrangler secret put` 设置）
+  用途：限制内部 relay 路径访问；未设置时所有 relay 请求都会返回 `404`
 
 即使 `SELF_HOSTNAMES` 为空，Worker 仍会自动阻止代理回当前请求自身的 `hostname` 或 `host`。
 
