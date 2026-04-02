@@ -16,7 +16,18 @@
 
 ### 一键部署到 Cloudflare Workers
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/evisx/agent-proxy)
+部署前请先 `fork` 本项目到你自己的 GitHub 账号。
+
+1. `fork` 本项目到你的 GitHub 账号，例如：`https://github.com/YOUR_GITHUB_USERNAME/agent-proxy`
+2. 将下面链接中的 `YOUR_GITHUB_USERNAME` 替换为你的 GitHub 用户名后再访问：
+
+```text
+https://deploy.workers.cloudflare.com/?url=https://github.com/YOUR_GITHUB_USERNAME/agent-proxy
+```
+
+示例：
+
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/YOUR_GITHUB_USERNAME/agent-proxy)
 
 ## 快速开始
 
