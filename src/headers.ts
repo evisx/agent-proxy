@@ -8,7 +8,6 @@ const HOP_BY_HOP_HEADERS = new Set([
   'transfer-encoding',
   'upgrade',
   'host',
-  'content-length',
 ])
 
 function getSetCookieValues(headers: Headers): string[] {
