@@ -71,7 +71,7 @@ npm run dev
 请求：
 
 ```text
-GET /relay/<DISPATCH_SECRET>/proxy/www.google.com/search?q=workers
+GET /relay/<DISPATCH_SECRET>/h/www.google.com/search?q=workers
 ```
 
 转发到：
@@ -85,7 +85,7 @@ http://www.google.com/search?q=workers
 请求：
 
 ```text
-GET /relay/<DISPATCH_SECRET>/proxyssl/github.com/repos/cloudflare/workers?tab=actions
+GET /relay/<DISPATCH_SECRET>/s/github.com/repos/cloudflare/workers?tab=actions
 ```
 
 转发到：
@@ -96,7 +96,8 @@ https://github.com/repos/cloudflare/workers?tab=actions
 
 ### 约束说明
 
-- 只有 `/relay/<DISPATCH_SECRET>/proxy...` 与 `/relay/<DISPATCH_SECRET>/proxyssl...` 会进入代理主流程
+- 只有 `/relay/<DISPATCH_SECRET>/h...` 与 `/relay/<DISPATCH_SECRET>/s...` 会进入代理主流程
+- 其中 `h` 表示转发到 `http://` 上游，`s` 表示转发到 `https://` 上游
 - `DISPATCH_SECRET` 不匹配时统一返回 `404`
 - `<site>` 必须是合法的上游 `authority`，即 `host` 或 `host:port`
 - `<site>` 之后的 path 与 query 会按原样拼接回目标 URL
@@ -108,7 +109,7 @@ https://github.com/repos/cloudflare/workers?tab=actions
 
 - `ROUTE_BASE_PATH`
   默认值：空字符串
-  用途：为 relay 路由增加公共前缀，例如 `/edge/relay/<DISPATCH_SECRET>/proxyssl/example.com`
+  用途：为 relay 路由增加公共前缀，例如 `/edge/relay/<DISPATCH_SECRET>/s/example.com`
 - `SELF_HOSTNAMES`
   默认值：空字符串
   用途：逗号分隔的自代理主机名或 self-origin，用于阻断明显的循环代理

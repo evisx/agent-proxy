@@ -24,12 +24,12 @@ function stripBasePath(pathname: string, routeBasePath: string): string {
 }
 
 function getProxyProtocol(segment: string): UpstreamProtocol {
-  if (segment === 'proxy') {
-    return 'http'
+  if (segment === 's') {
+    return 'https'
   }
 
-  if (segment === 'proxyssl') {
-    return 'https'
+  if (segment === 'h') {
+    return 'http'
   }
 
   throw new ProxyError(404, 'NOT_PROXY_ROUTE', '未匹配到代理路由')

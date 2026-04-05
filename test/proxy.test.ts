@@ -46,7 +46,7 @@ describe('handleProxyRequest', () => {
     const fetchSpy = vi.fn()
 
     const response = await handleProxyRequest(
-      createRequest('/relay/bad-token/proxyssl/example.com/v1/chat'),
+      createRequest('/relay/bad-token/h/example.com/v1/chat'),
       createEnv(),
       fetchSpy,
     )
@@ -55,7 +55,7 @@ describe('handleProxyRequest', () => {
     expect(fetchSpy).not.toHaveBeenCalled()
   })
 
-  it('maps the internal relay /proxy route to an HTTP upstream and preserves path and query', async () => {
+  it('maps the internal relay /h route to an HTTP upstream and preserves path and query', async () => {
     const fetchSpy = vi.fn(async (request: Request) => {
       expect(request.url).toBe('http://www.google.com/search/results?q=workers')
 
@@ -63,7 +63,7 @@ describe('handleProxyRequest', () => {
     })
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxy/www.google.com/search/results?q=workers'),
+      createRequest('/relay/relay-secret/h/www.google.com/search/results?q=workers'),
       createEnv(),
       fetchSpy,
     )
@@ -73,7 +73,7 @@ describe('handleProxyRequest', () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('maps the internal relay /proxyssl route to an HTTPS upstream and ignores legacy Bearer routing', async () => {
+  it('maps the internal relay /s route to an HTTPS upstream and ignores legacy Bearer routing', async () => {
     const fetchSpy = vi.fn(async (request: Request) => {
       expect(request.url).toBe('https://api.openai.com/v1/responses?list=models')
       expect(request.headers.get('authorization')).toBe(
@@ -89,7 +89,7 @@ describe('handleProxyRequest', () => {
     })
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxyssl/api.openai.com/v1/responses?list=models', {
+      createRequest('/relay/relay-secret/s/api.openai.com/v1/responses?list=models', {
         headers: {
           Authorization: 'Bearer https://legacy.invalid:token',
         },
@@ -110,7 +110,7 @@ describe('handleProxyRequest', () => {
     })
 
     const response = await handleProxyRequest(
-      createRequest('/edge/relay/relay-secret/proxyssl/example.com/v1/chat?from=edge'),
+      createRequest('/edge/relay/relay-secret/s/example.com/v1/chat?from=edge'),
       createEnv({ ROUTE_BASE_PATH: '/edge' }),
       fetchSpy,
     )
@@ -123,7 +123,7 @@ describe('handleProxyRequest', () => {
     const fetchSpy = vi.fn()
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxy'),
+      createRequest('/relay/relay-secret/s'),
       createEnv(),
       fetchSpy,
     )
@@ -141,7 +141,7 @@ describe('handleProxyRequest', () => {
     const fetchSpy = vi.fn()
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxy/https:%2F%2Fbad'),
+      createRequest('/relay/relay-secret/s/https:%2F%2Fbad'),
       createEnv(),
       fetchSpy,
     )
@@ -159,7 +159,7 @@ describe('handleProxyRequest', () => {
     const fetchSpy = vi.fn()
 
     const sameHostResponse = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxyssl/worker.example.com'),
+      createRequest('/relay/relay-secret/s/worker.example.com'),
       createEnv(),
       fetchSpy,
     )
@@ -167,7 +167,7 @@ describe('handleProxyRequest', () => {
     expect(sameHostResponse.status).toBe(403)
 
     const aliasResponse = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxy/edge.example.com'),
+      createRequest('/relay/relay-secret/h/edge.example.com'),
       createEnv({ SELF_HOSTNAMES: 'edge.example.com,api.edge.example.com' }),
       fetchSpy,
     )
@@ -190,7 +190,7 @@ describe('handleProxyRequest', () => {
     })
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxyssl/example.com/v1/chat/completions', {
+      createRequest('/relay/relay-secret/s/example.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -220,7 +220,7 @@ describe('handleProxyRequest', () => {
     })
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxy/upload.example.com/files/blob', {
+      createRequest('/relay/relay-secret/h/upload.example.com/files/blob', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/octet-stream',
@@ -261,7 +261,7 @@ describe('handleProxyRequest', () => {
     })
 
     const response = await handleProxyRequest(
-      createRequest('/relay/relay-secret/proxyssl/stream.example.com/events'),
+      createRequest('/relay/relay-secret/s/stream.example.com/events'),
       createEnv(),
       fetchSpy,
     )
@@ -300,7 +300,7 @@ describe('handleProxyRequest', () => {
       )
 
       const response = await handleProxyRequest(
-        createRequest('/relay/relay-secret/proxyssl/protected.example.com'),
+        createRequest('/relay/relay-secret/s/protected.example.com'),
         createEnv(),
         fetchSpy,
       )
